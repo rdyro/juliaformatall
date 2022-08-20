@@ -1,0 +1,18 @@
+echo "Installing 'juliaformatall' to '~/.local/bin/juliaformatall'"
+
+mkdir -p "$HOME/.local/bin"
+cp juliaformatall "$HOME/.local/bin"
+
+case $SHELL in
+*/zsh) 
+   echo "export JULIAFORMATALL_HOME='$(pwd)'" >> ~/.zshrc
+   echo "export PATH=\"\$PATH:\$HOME/.local/bin\"" >> ~/.zshrc
+   source ~/.zshrc
+   ;;
+*/bash)
+   echo "export JULIAFORMATALL_HOME='$(pwd)'" >> ~/.bashrc
+   echo "export PATH=\"\$PATH:\$HOME/.local/bin\"" >> ~/.bashrc
+   source ~/.bashrc
+   ;;
+*)
+esac

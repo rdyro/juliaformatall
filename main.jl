@@ -2,8 +2,6 @@ using JuliaFormatter, JSON
 
 ####################################################################################################
 
-options = Dict([:indent => 2, :margin => 100, :always_for_in => true])
-
 function files_by_filetype(ft, dirname)
   files = reduce(vcat, map(triplet -> joinpath.(triplet[1], triplet[3]), walkdir(dirname)))
   return filter(file -> splitext(file)[2] == ft, files)
@@ -12,6 +10,12 @@ end
 ####################################################################################################
 
 function main(dirname::Union{String,Nothing} = nothing)::Nothing
+  options = Dict([:indent => 2, :margin => 100, :always_for_in => true])
+  if haskey(ENV, "JULIAFORMATALL_CONFIG")
+    user_config = JSON.parse(ENV["JULIAFORMATALL_CONFIG"])
+    merge!(options, Dict{Symbol,Any}(Symbol(pair.first) => pair.second for pair in user_config))
+  end
+
   (dirname == nothing) && (dirname = pwd())
   all_files = files_by_filetype(".jl", dirname)
   for file in all_files
