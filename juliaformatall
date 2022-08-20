@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+juliaformatall() {
+  # find the home for the script, needed for sysimage compilation ##############
+  if [[ $JULIAFORMATALL_HOME == "" ]]; then
+    echo '$JULIAFORMATALL_HOME'" is not set, please set the variable and retry."
+    return 1
+  fi
+
+  # choose which directory root to format ######################################
+  format_dir="$1"
+  if [[ $format_dir == "" ]]; then
+    #echo "'format_dir' not provided argument, provide as first argument."
+    #echo "Choosing current working directory."
+    format_dir=$(pwd)
+  fi 
+
+  # check if sysimage exists and compile it if it doesn't ######################
+  if [[ ! -f "$JULIAFORMATALL_HOME/build/juliaformatall_sysimage.so" ]]; then
+    julia "$JULIAFORMATALL_HOME/compile.jl"
+  fi
+
+  # perform the formatting #####################################################
+  julia -J "$JULIAFORMATALL_HOME/build/juliaformatall_sysimage.so" \
+    -e "include(\"$JULIAFORMATALL_HOME/main.jl\"); main(\"$format_dir\")"
+}
+
+(return 0 2>/dev/null) && sourced=1 || sourced=0
+
+if [[ $sourced == "1" ]]; then
+  echo "You sourced this script, function 'juliaformatall' now available."
+else
+  echo "Running juliaformatall"
+  juliaformatall
+fi
