@@ -30,6 +30,10 @@ juliaformatall() {
 if [[ $sourced == "1" ]]; then
   echo "You sourced this script, function 'juliaformatall' now available."
 else
-  echo "Running juliaformatall on"
+  if [[ "$1" != "" ]]; then
+    echo "Running juliaformatall on" "$1"
+  else
+    echo "Running juliaformatall on ./"
+  fi
   juliaformatall "$1"
 fi
