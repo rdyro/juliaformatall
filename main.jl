@@ -9,8 +9,9 @@ end
 
 ####################################################################################################
 
-function main(dirname::Union{String,Nothing} = nothing)::Nothing
-  options = Dict([:indent => 2, :margin => 100, :always_for_in => true])
+function main(dirname::Union{String,Nothing}=nothing)::Nothing
+  options =
+    Dict([:indent => 2, :margin => 100, :always_for_in => true, :whitespace_in_kwargs => false])
   if haskey(ENV, "JULIAFORMATALL_CONFIG")
     user_config = JSON.parse(ENV["JULIAFORMATALL_CONFIG"])
     merge!(options, Dict{Symbol,Any}(Symbol(pair.first) => pair.second for pair in user_config))

@@ -6,7 +6,7 @@ Pkg.add("PackageCompiler")
 
 using PackageCompiler
 
-function main(; generator_file = nothing, trace = false)
+function main(; generator_file=nothing, trace=false)
   Pkg.add("JuliaFormatter")
   trace_file = abspath("$(@__DIR__)/build/trace.jl")
   (!isdir(dirname(trace_file))) && (mkdir(dirname(trace_file)))
@@ -56,10 +56,10 @@ function main(; generator_file = nothing, trace = false)
   # create the actual sysimage.so file #########################################
   create_sysimage(
     ["JuliaFormatter", "JSON"],
-    sysimage_path = abspath("$(@__DIR__)/build/juliaformatall_sysimage.so"),
-    precompile_execution_file = trace_file,
+    sysimage_path=abspath("$(@__DIR__)/build/juliaformatall_sysimage.so"),
+    precompile_execution_file=trace_file,
   )
   return
 end
 
-main(; generator_file = abspath("$(@__DIR__)/main.jl"), trace = true)
+main(; generator_file=abspath("$(@__DIR__)/main.jl"), trace=true)
